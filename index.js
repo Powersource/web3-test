@@ -41,6 +41,21 @@ web3.version.getNetwork((err, netId) => {
 
 console.log("Running the app! wooo!!");
 
+// Sync is supposed to work here but didn't
 web3.eth.getAccounts(function(err, accounts) {
   console.log('My account:', accounts[0]);
+
+  // Async is required here
+  // https://github.com/MetaMask/faq/blob/master/DEVELOPERS.md#dizzy-all-async---think-of-metamask-as-a-light-client
+  web3.eth.sendTransaction({
+    from: accounts[0],
+    to: addr.patrik,
+    value: 1e15,
+    gas: 1e6
+  }, (err, res) => {
+    if (err) { throw err }
+
+    console.log('Sent money:', res);
+  });
+
 });
